@@ -7,6 +7,7 @@ This project estimates the location of a device based on WiFi signal strength. I
   - [1. Clone the Repository](#1-clone-the-repository)
   - [2. Install vcpkg](#2-install-vcpkg)
   - [3. Install Dependencies via vcpkg](#3-install-dependencies-via-vcpkg)
+  - [3.1 Install dependencies for wifi\_scan](#31-install-dependencies-for-wifi_scan)
   - [4. Set Up the Build System](#4-set-up-the-build-system)
 - [Usage](#usage)
 - [Acknowledgements](#acknowledgements)
@@ -49,6 +50,11 @@ Use vcpkg to install the required libraries:
 /usr/local/vcpkg/vcpkg install eigen3
 ```
 
+### 3.1 Install dependencies for wifi_scan
+```sh
+sudo apt-get install libmnl0 libmnl-dev
+```
+
 ### 4. Set Up the Build System
 Create a build directory and configure the project using CMake:
 ```sh
@@ -64,8 +70,13 @@ make
 To run the FingerprintPositionEstimator:
 ```sh
 cd build
-./localizator
+sudo ./localizator
 ```
+
+Optionally, there's the possibility to run the optimizator without making a scan with the following command:
+```sh
+sudo ./localizator --use-file
+``` 
 
 ## Acknowledgements
 This project includes the following libraries:
