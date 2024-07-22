@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(WiFiFP-Nav VERSION 1.0 LANGUAGES CXX)
+project(WiFiFP-Nav VERSION 1.0 LANGUAGES CXX C)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -15,10 +15,12 @@ include_directories(include)
 set(SOURCE_FILES
     ${SOURCE_DIR}/APData.cpp
     ${SOURCE_DIR}/APDataLoader.cpp
+    lib/wifi_scan.c
     ${SOURCE_DIR}/WiFiLocalization.cpp
     ${SOURCE_DIR}/WiFiMeasurementFactor.cpp
     ${SOURCE_DIR}/WiFiScanData.cpp
     ${SOURCE_DIR}/WiFiScanDataLoader.cpp
+    ${SOURCE_DIR}/Scan.cpp
     ${SOURCE_DIR}/main.cpp
 )
 
@@ -47,7 +49,8 @@ target_include_directories(${TARGET_NAME} PRIVATE
 )
 
 target_link_libraries(${TARGET_NAME} PRIVATE 
-    JsonCpp::JsonCpp 
+    JsonCpp::JsonCpp
+    mnl
     Eigen3::Eigen 
     gtsam
 )
