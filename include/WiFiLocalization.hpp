@@ -29,7 +29,7 @@ public:
 
   void loadAPData(const std::string &filename);
   void loadScanData(const std::string &filename);
-  Eigen::Vector3d estimatePosition();
+  Eigen::Vector3d estimatePosition(int N);
 };
 
 #endif // WIFILOCALIZATION_HPP

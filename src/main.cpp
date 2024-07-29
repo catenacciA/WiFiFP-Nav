@@ -29,10 +29,10 @@ int main(int argc, char* argv[]) {
         performLiveScan = false;
     }
 
-    if (performLiveScan) {
+/*     if (performLiveScan) {
         Scan wifi_scanner(interface);
         wifi_scanner.scan(wifiScanDataVec, scanFilter);
-    }
+    } */
 
     APDataLoader apLoader;
     WiFiScanDataLoader scanLoader;
@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
     localization.loadAPData(apDataFile);
     localization.loadScanData(scanDataFile);
 
-    auto estimatedPosition = localization.estimatePosition();
+    auto estimatedPosition = localization.estimatePosition(65);
 
     std::cout << "Estimated Position: [" << estimatedPosition.x() << ", "
               << estimatedPosition.y() << ", " << estimatedPosition.z() << "]"
