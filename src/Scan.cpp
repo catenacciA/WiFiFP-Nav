@@ -33,7 +33,8 @@ bool Scan::scan(std::vector<std::vector<WiFiScanData>> &wifiScanDataVec,
   struct bss_info bssInfos[maxAPs];
 
   for (int scanIdx = 0; scanIdx < numScans; ++scanIdx) {
-    std::cout << "Starting scan " << scanIdx + 1 << " of " << numScans << std::endl;
+    std::cout << "Starting scan " << scanIdx + 1 << " of " << numScans
+              << std::endl;
 
     wifi_scan *wifi = wifi_scan_init(interface.c_str());
     if (!wifi) {
@@ -50,7 +51,8 @@ bool Scan::scan(std::vector<std::vector<WiFiScanData>> &wifiScanDataVec,
       return false;
     }
 
-    std::cout << "Found " << numAPs << " access points during scan " << scanIdx + 1 << std::endl;
+    std::cout << "Found " << numAPs << " access points during scan "
+              << scanIdx + 1 << std::endl;
 
     for (int i = 0; i < numAPs && i < maxAPs; ++i) {
       char bssidStr[BSSID_STRING_LENGTH];
