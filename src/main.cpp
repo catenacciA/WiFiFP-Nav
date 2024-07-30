@@ -29,10 +29,10 @@ int main(int argc, char* argv[]) {
         performLiveScan = false;
     }
 
-/*     if (performLiveScan) {
+    if (performLiveScan) {
         Scan wifi_scanner(interface);
         wifi_scanner.scan(wifiScanDataVec, scanFilter);
-    } */
+    }
 
     APDataLoader apLoader;
     WiFiScanDataLoader scanLoader;

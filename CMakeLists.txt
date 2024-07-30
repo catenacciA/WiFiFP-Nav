@@ -15,12 +15,12 @@ include_directories(include)
 set(SOURCE_FILES
     ${SOURCE_DIR}/APData.cpp
     ${SOURCE_DIR}/APDataLoader.cpp
-    # lib/wifi_scan.c
+    lib/wifi_scan.c
     ${SOURCE_DIR}/WiFiLocalization.cpp
     ${SOURCE_DIR}/WiFiMeasurementFactor.cpp
     ${SOURCE_DIR}/WiFiScanData.cpp
     ${SOURCE_DIR}/WiFiScanDataLoader.cpp
-    # ${SOURCE_DIR}/Scan.cpp
+    ${SOURCE_DIR}/Scan.cpp
     ${SOURCE_DIR}/main.cpp
 )
 
@@ -52,4 +52,5 @@ target_link_libraries(${TARGET_NAME} PRIVATE
     JsonCpp::JsonCpp
     Eigen3::Eigen 
     gtsam
+    mnl
 )

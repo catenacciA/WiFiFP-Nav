@@ -33,6 +33,8 @@ bool Scan::scan(std::vector<std::vector<WiFiScanData>> &wifiScanDataVec,
   struct bss_info bssInfos[maxAPs];
 
   for (int scanIdx = 0; scanIdx < numScans; ++scanIdx) {
+    std::cout << "Starting scan " << scanIdx + 1 << " of " << numScans << std::endl;
+
     wifi_scan *wifi = wifi_scan_init(interface.c_str());
     if (!wifi) {
       std::cerr << "Failed to initialize WiFi scan on interface "
@@ -47,6 +49,8 @@ bool Scan::scan(std::vector<std::vector<WiFiScanData>> &wifiScanDataVec,
                 << interface << std::endl;
       return false;
     }
+
+    std::cout << "Found " << numAPs << " access points during scan " << scanIdx + 1 << std::endl;
 
     for (int i = 0; i < numAPs && i < maxAPs; ++i) {
       char bssidStr[BSSID_STRING_LENGTH];
@@ -65,6 +69,8 @@ bool Scan::scan(std::vector<std::vector<WiFiScanData>> &wifiScanDataVec,
         wifiDataMap[mac].push_back(data);
       }
     }
+
+    std::cout << "Scan " << scanIdx + 1 << " completed." << std::endl;
   }
 
   wifiScanDataVec.clear();
@@ -106,21 +112,16 @@ bool Scan::scan(std::vector<std::vector<WiFiScanData>> &wifiScanDataVec,
     const std::string &mac = entry.first;
     const std::vector<WiFiScanData> &wifiData = entry.second;
 
-    if (wifiData.size() == 10) {
-      for (const auto &data : wifiData) {
-        outputFile << data.mac << "," << data.rssi << "," << data.mean << ","
-                   << data.std << "," << data.frequency << "\n";
-      }
-    } else if (wifiData.size() > 10) {
-      for (int i = 0; i < 10; ++i) {
-        const auto &data = wifiData[i];
-        outputFile << data.mac << "," << data.rssi << "," << data.mean << ","
-                   << data.std << "," << data.frequency << "\n";
-      }
+    if (!wifiData.empty()) {
+      const auto &data = wifiData.front();
+      outputFile << data.mac << "," << data.rssi << "," << data.mean << ","
+                 << data.std << "," << data.frequency << "\n";
     }
   }
 
   outputFile.close();
+
+  std::cout << "Scan data has been written to scan_data.csv" << std::endl;
 
   return true;
 }
