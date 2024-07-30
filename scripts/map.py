@@ -144,8 +144,8 @@ def visualize_aps_and_trajectory(ap_details, trajectory_data):
     plt.show()
 
 def main():
-    trajectory_data = load_trajectory_data("../lio_slam.txt")
-    wifi_scans, wifi_timestamps = load_wifi_data("../wifi")
+    trajectory_data = load_trajectory_data("lio_slam.txt")
+    wifi_scans, wifi_timestamps = load_wifi_data("wifi")
     wifi_timestamps_in_seconds = convert_wifi_timestamps_to_seconds(wifi_timestamps)
     
     fingerprinting_dataset = create_fingerprinting_dataset(trajectory_data, wifi_scans, wifi_timestamps_in_seconds)
