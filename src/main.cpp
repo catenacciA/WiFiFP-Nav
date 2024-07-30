@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
     localization.loadAPData(apDataFile);
     localization.loadScanData(scanDataFile);
 
-    auto estimatedPosition = localization.estimatePosition(65);
+    auto estimatedPosition = localization.estimatePosition(3, 10);
 
     std::cout << "Estimated Position: [" << estimatedPosition.x() << ", "
               << estimatedPosition.y() << ", " << estimatedPosition.z() << "]"
