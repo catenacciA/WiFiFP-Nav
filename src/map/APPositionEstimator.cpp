@@ -68,9 +68,6 @@ void APPositionEstimator::optimizeAPPosition(
   std::vector<double> distances;
   std::string ssid;
 
-  std::cout << "Optimizing position for AP with MAC: " << macAddress
-            << std::endl;
-
   std::sort(apRecords.begin(), apRecords.end(),
             [](const FingerprintingRecord &a, const FingerprintingRecord &b) {
               return a.signalDBM > b.signalDBM;
@@ -85,12 +82,9 @@ void APPositionEstimator::optimizeAPPosition(
     double distance = rssiToDistance(record.frequency, record.signalDBM);
     distances.push_back(distance);
     ssid = record.ssid;
-    std::cout << "Known Point " << i << ": (" << record.x << ", " << record.y
-              << ", " << record.z << "), Distance: " << distance << std::endl;
   }
 
   Point3 initialGuess = computeAveragePosition(knownPoints);
-  std::cout << "Initial Guess: " << initialGuess << std::endl;
 
   auto priorNoise = noiseModel::Isotropic::Sigma(3, 2.0);
   graph.emplace_shared<PriorFactor<Point3>>(Symbol('a', 0), initialGuess,
@@ -103,22 +97,13 @@ void APPositionEstimator::optimizeAPPosition(
                                             distances[i], noise);
   }
 
-  std::cout << "Factor graph constructed. Starting optimization..."
-            << std::endl;
-
-  LevenbergMarquardtParams params;
-  params.setVerbosity("ERROR");
-  params.setVerbosityLM("TRYLAMBDA");
-
-  LevenbergMarquardtOptimizer optimizer(graph, initialEstimate, params);
+  LevenbergMarquardtOptimizer optimizer(graph, initialEstimate);
   Values result = optimizer.optimize();
 
   Point3 estimatedPosition = result.at<Point3>(Symbol('a', 0));
-  std::cout << "Estimated Position: " << estimatedPosition << std::endl;
 
   Eigen::Matrix3d covarianceMatrix =
       calculateCovarianceMatrix(knownPoints, estimatedPosition);
-  std::cout << "Covariance Matrix: \n" << covarianceMatrix << std::endl;
 
   estimatedPositions_.emplace(
       macAddress, APPosition(ssid, estimatedPosition, covarianceMatrix));
