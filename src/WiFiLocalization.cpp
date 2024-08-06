@@ -151,6 +151,8 @@ Eigen::Vector3d WiFiLocalization::estimatePosition(int N, double maxDistance) {
   gtsam::LevenbergMarquardtParams params;
   params.setVerbosity("ERROR");
   params.setMaxIterations(100);
+  params.setlambdaInitial(1.0); // Increase initial lambda for more regularization
+  params.setlambdaFactor(2.0);  // Adjust lambda scaling factor for stability
 
   gtsam::LevenbergMarquardtOptimizer optimizer(graph, initialEstimate, params);
   std::cout << "Initial error: " << optimizer.error() << std::endl;
