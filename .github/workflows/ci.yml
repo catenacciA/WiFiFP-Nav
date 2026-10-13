@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-test:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install GTSAM 4.2 and dependencies
+        run: |
+          sudo add-apt-repository -y ppa:borglab/gtsam-release-4.2
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libgtsam-dev libgtsam-unstable-dev libboost-all-dev libtbb-dev libmnl-dev ninja-build
+
+      - name: Configure
+        run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DWIFIFP_BUILD_SCANNER=ON
+
+      - name: Build
+        run: cmake --build build
+
+      - name: Unit tests
+        run: ctest --test-dir build --output-on-failure
+
+      - name: Benchmark on the bundled dataset
+        run: |
+          ./build/wififp build-map -t data/office/trajectory.tum -s data/office/scans.csv -o build/map
+          ./build/wififp benchmark -t data/office/trajectory.tum -s data/office/scans.csv | tee -a "$GITHUB_STEP_SUMMARY"
